@@ -111,6 +111,122 @@ public class PatientController {
         }
     }
 
+    @GetMapping("/patient/{patientId}/records")
+    public ResponseEntity<?> getPatientRecordsByPatientId(@PathVariable(value = "patientId") Integer patientId) {
+        try {
+            Patient patient = patientService.getPatientById(patientId);
+            if (patient == null) {
+                return new ResponseEntity<>(
+                        Map.of("error", "patient not found"),
+                        HttpStatus.NOT_FOUND
+                );
+            }
+            return new ResponseEntity<>(
+                    Map.of("response", patientService.getPatientRecordsByPatientId(patientId)),
+                    HttpStatus.OK
+            );
+        }
+        catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
+    @GetMapping("/patient/record/{Id}")
+    public ResponseEntity<?> getPatientRecordsById(@PathVariable(value = "Id") Integer Id) {
+        try {
+            PatientRecords record = patientService.getPatientRecordsById(Id);
+            if (record == null) {
+                return new ResponseEntity<>(
+                        Map.of("error", "patient record not found"),
+                        HttpStatus.NOT_FOUND
+                );
+            }
+            return new ResponseEntity<>(
+                    Map.of("response", record),
+                    HttpStatus.OK
+            );
+        }
+        catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
+    @DeleteMapping("/patient/record/{Id}")
+    public ResponseEntity<?> deletePatientRecordsById(@PathVariable(value = "Id") Integer Id) {
+        try {
+            PatientRecords record = patientService.getPatientRecordsById(Id);
+            if (record == null) {
+                return new ResponseEntity<>(
+                        Map.of("error", "patient record not found"),
+                        HttpStatus.NOT_FOUND
+                );
+            }
+            patientService.deletePatientRecordsById(Id);
+            return new ResponseEntity<>(
+                    Map.of("response", "patient record is deleted successfully."),
+                    HttpStatus.OK
+            );
+        }
+        catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
+    @PatchMapping("/patient/record/{Id}/updatePrescription")
+    public ResponseEntity<?> updatePatientRecordsPrescription(@PathVariable(value = "Id") Integer Id, @RequestBody Map<String, String> body) {
+        try {
+            PatientRecords record = patientService.getPatientRecordsById(Id);
+            if (record == null) {
+                return new ResponseEntity<>(
+                        Map.of("error", "patient record not found"),
+                        HttpStatus.NOT_FOUND
+                );
+            }
+            record.setPrescription(body.get("prescription"));
+            if (patientService.updatePatientRecords(record)) {
+                return new ResponseEntity<>(
+                        Map.of("response", "patient record is updated successfully."),
+                        HttpStatus.OK
+                );
+            }
+            return new ResponseEntity<>(
+                    Map.of("response", "patient record update failed."),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+        catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
+    @PatchMapping("/patient/record/{Id}/updateNotes")
+    public ResponseEntity<?> updatePatientRecordsNote(@PathVariable(value = "Id") Integer Id, @RequestBody Map<String, String> body) {
+        try {
+            PatientRecords record = patientService.getPatientRecordsById(Id);
+            if (record == null) {
+                return new ResponseEntity<>(
+                        Map.of("error", "patient record not found"),
+                        HttpStatus.NOT_FOUND
+                );
+            }
+
+            record.setNotes(body.get("notes"));
+            if(patientService.updatePatientRecords(record)) {
+                return new ResponseEntity<>(
+                        Map.of("response", "patient record is updated successfully."),
+                        HttpStatus.OK
+                );
+            }
+            return new ResponseEntity<>(
+                    Map.of("response", "patient record updated failed."),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+        catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
     @PostMapping("/patient/record")
     public ResponseEntity<?> createPatientRecords(@RequestBody PatientRecords record) {
         Patient patient = patientService.getPatientById(record.getPatientId());
@@ -123,8 +239,21 @@ public class PatientController {
 
         //TODO: check for doctor id
 
-
-
+        try {
+            Pair<String, String> response = patientService.createPatientRecords(record);
+            if (response.getSecond().isEmpty()) {
+                return new ResponseEntity<>(
+                        Map.of("response", "patient record is created successfully.", "id", response.getFirst()),
+                        HttpStatus.CREATED
+                );
+            }
+            return new ResponseEntity<>(
+                    Map.of("error", response.getSecond()),
+                    HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            return handleException(e);
+        }
 
     }
 
