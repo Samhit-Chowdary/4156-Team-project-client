@@ -37,8 +37,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         (requests) ->
                                 requests
+                                        .requestMatchers("/client/**")
+                                        .hasRole("SUPERUSER")
                                         .requestMatchers("/patient/**")
-                                        .hasAnyRole("SUPERUSER", "DOCTOR")
+                                        .hasAnyRole("SUPERUSER", "DOCTOR", "NURSE")
                                         .anyRequest()
                                         .authenticated())
                 .httpBasic(Customizer.withDefaults());
