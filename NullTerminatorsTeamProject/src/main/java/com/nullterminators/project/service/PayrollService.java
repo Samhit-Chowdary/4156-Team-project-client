@@ -2,6 +2,7 @@ package com.nullterminators.project.service;
 
 import java.util.Base64;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -28,7 +30,8 @@ public class PayrollService {
   @Value("${service.auth.password}")
   private String password;
 
-  private static final String BASE_URL = "http://localhost:8080/api/payroll";
+  @Value("${service.url}")
+  private String BASE_URL;
 
   @Autowired
   public PayrollService(RestTemplate restTemplate) {
@@ -56,9 +59,13 @@ public class PayrollService {
   public Pair<HttpStatus, Object> getPayrollByEmployeeId(Integer employeeId) {
     HttpHeaders headers = createHeaders();
     HttpEntity<String> entity = new HttpEntity<>(headers);
-    ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/" + employeeId,
-            HttpMethod.GET, entity, Object.class);
-    return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId,
+              HttpMethod.GET, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    }
   }
 
   /**
@@ -71,9 +78,13 @@ public class PayrollService {
   public Pair<HttpStatus, Object> markAsPaid(Integer employeeId, Map<String, Object> updates) {
     HttpHeaders headers = createHeaders();
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
-    ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/" + employeeId
-                    + "/markAsPaid", HttpMethod.PATCH, entity, Object.class);
-    return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId
+              + "/markAsPaid", HttpMethod.PATCH, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    }
   }
 
   /**
@@ -87,9 +98,13 @@ public class PayrollService {
                                                Map<String, Object> updates) {
     HttpHeaders headers = createHeaders();
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
-    ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/" + employeeId
-                    + "/markAsUnpaid", HttpMethod.PATCH, entity, Object.class);
-    return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId
+              + "/markAsUnpaid", HttpMethod.PATCH, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    }
   }
 
   /**
@@ -103,9 +118,13 @@ public class PayrollService {
                                                             Map<String, Object> updates) {
     HttpHeaders headers = createHeaders();
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
-    ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/" + employeeId
-                    + "/addPayroll", HttpMethod.POST, entity, Object.class);
-    return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId
+                      + "/addPayroll", HttpMethod.POST, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    }
   }
 
   /**
@@ -119,9 +138,13 @@ public class PayrollService {
                                                              Map<String, Object> updates) {
     HttpHeaders headers = createHeaders();
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
-    ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/" + employeeId
-                    + "/deletePayroll", HttpMethod.DELETE, entity, Object.class);
-    return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId
+                      + "/deletePayroll", HttpMethod.DELETE, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    }
   }
 
   /**
@@ -134,9 +157,13 @@ public class PayrollService {
   public Pair<HttpStatus, Object> adjustSalary(Integer employeeId, Map<String, Object> updates) {
     HttpHeaders headers = createHeaders();
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
-    ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/" + employeeId
-                    + "/adjustSalary", HttpMethod.PATCH, entity, Object.class);
-    return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId
+                      + "/adjustSalary", HttpMethod.PATCH, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    }
   }
 
   /**
@@ -149,9 +176,13 @@ public class PayrollService {
   public Pair<HttpStatus, Object> adjustDay(Integer employeeId, Map<String, Object> updates) {
     HttpHeaders headers = createHeaders();
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
-    ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/" + employeeId
-                    + "/adjustDay", HttpMethod.PATCH, entity, Object.class);
-    return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId
+              + "/adjustDay", HttpMethod.PATCH, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    }
   }
 
   /**
@@ -163,9 +194,13 @@ public class PayrollService {
   public Pair<HttpStatus, Object> generatePayroll(Map<String, Object> updates) {
     HttpHeaders headers = createHeaders();
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
-    ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/generatePayroll",
-            HttpMethod.POST, entity, Object.class);
-    return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/generatePayroll",
+              HttpMethod.POST, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    }
   }
 
   /**
@@ -177,8 +212,12 @@ public class PayrollService {
   public Pair<HttpStatus, Object> deletePayroll(Map<String, Object> updates) {
     HttpHeaders headers = createHeaders();
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
-    ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/deletePayroll",
-            HttpMethod.DELETE, entity, Object.class);
-    return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/deletePayroll",
+              HttpMethod.DELETE, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    }
   }
 }

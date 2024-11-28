@@ -44,7 +44,7 @@ public class PayrollController {
       Pair<HttpStatus, Object> result = payrollService.getPayrollByEmployeeId(employeeId);
       if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
         return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
-                HttpStatus.NO_CONTENT);
+                HttpStatus.BAD_GATEWAY);
       }
       return new ResponseEntity<>(result.getSecond(), result.getFirst());
     } catch (Exception e) {
