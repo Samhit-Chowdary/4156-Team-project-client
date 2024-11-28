@@ -35,7 +35,7 @@ public class EmployeeHierarchyClientController {
       List<Long> subordinates = hierarchyService.getSubordinates(employeeId);
       return ResponseEntity.ok(subordinates);
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Failed to fetch subordinates: " + e.getMessage());
+      return hierarchyService.handleException(e);
     }
   }
 
@@ -53,7 +53,7 @@ public class EmployeeHierarchyClientController {
           ? ResponseEntity.ok(supervisor)
           : ResponseEntity.badRequest().body("Supervisor not found");
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Failed to fetch supervisor: " + e.getMessage());
+      return hierarchyService.handleException(e);
     }
   }
 
@@ -69,7 +69,7 @@ public class EmployeeHierarchyClientController {
       Object subtree = hierarchyService.getSubtree(employeeId);
       return ResponseEntity.ok(subtree);
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Failed to fetch subtree: " + e.getMessage());
+      return hierarchyService.handleException(e);
     }
   }
 
@@ -86,7 +86,7 @@ public class EmployeeHierarchyClientController {
       hierarchyService.addEdge(supervisorId, employeeId);
       return ResponseEntity.ok("Edge added successfully.");
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Failed to add edge: " + e.getMessage());
+      return hierarchyService.handleException(e);
     }
   }
 
@@ -102,7 +102,7 @@ public class EmployeeHierarchyClientController {
       hierarchyService.removeEdge(employeeId);
       return ResponseEntity.ok("Edge removed successfully.");
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Failed to remove edge: " + e.getMessage());
+      return hierarchyService.handleException(e);
     }
   }
 
@@ -136,7 +136,7 @@ public class EmployeeHierarchyClientController {
       hierarchyService.removeEdge(employeeId);
       return ResponseEntity.ok("Employee deleted and subordinates reassigned successfully.");
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Failed to delete employee: " + e.getMessage());
+      return hierarchyService.handleException(e);
     }
   }
 
@@ -154,8 +154,7 @@ public class EmployeeHierarchyClientController {
       List<Long> managers = hierarchyService.getManagersUpToHeight(employeeId, height);
       return ResponseEntity.ok(managers);
     } catch (Exception e) {
-      return ResponseEntity.badRequest()
-          .body("Failed to fetch managers up to height " + height + ": " + e.getMessage());
+      return hierarchyService.handleException(e);
     }
   }
 }

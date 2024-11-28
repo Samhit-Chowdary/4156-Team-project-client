@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 /** Service class for making REST API calls to the Employee Hierarchy service. */
@@ -157,5 +160,28 @@ public class EmployeeHierarchyService {
     }
 
     return managers;
+  }
+
+
+
+  /**
+   * Handles exceptions by returning an appropriate ResponseEntity.
+   *
+   * If the exception is an instance of HttpClientErrorException, the response entity will
+   * contain the response body and status code from the exception. For other exceptions, a
+   * generic "Internal Server Error" response with HTTP status 500 is returned.
+   *
+   * @param e the exception to handle
+   * @return a ResponseEntity containing the error message and appropriate HTTP status code
+   */
+  public ResponseEntity<Object> handleException(Exception e) {
+    if (e instanceof HttpClientErrorException clientErrorException) {
+      return new ResponseEntity<>(
+              clientErrorException.getResponseBodyAsString(),
+              clientErrorException.getStatusCode()
+      );
+    }
+
+    return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
