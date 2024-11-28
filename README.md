@@ -1,16 +1,36 @@
-# 4156-Team-project-client
+# 4156-Team-Project-Client
 
-This is the GitHub repository for the **client portion** of the Team Project associated with COMS 4156 Advanced Software Engineering. Our team name is NullTerminators and the following are our members: Ajit, Samhit, Abhilash, Hamsitha and Madhura.
-
+This GitHub repository hosts the **client-side** implementation of the Team Project for COMS 4156: Advanced Software Engineering. Our team, NullTerminators, consists of the following members: Abhilash Ganga (ag4797), Ajit Sharma Kasturi (ak5055), Hamsitha Challagundla (hc3540), Madhura Chatterjee (mc5470), Samhit Chowdary Bhogavalli (sb4845)
 ## Viewing the Service Repository
-Please use the following link to view the repository relevant to the service: https://github.com/griffinnewbold/COMS-4156-Service
+Please use the following link to view the repository relevant to the service: https://github.com/Samhit-Chowdary/4156-Team-project
 
-## About our App
-Our app targets **healthcare workers**, it is an app that allows for the employee profile, payroll, timeoff and hierarchy management across various kinds of people belonging to healthcare.
+## About our Client
+Our client application is designed specifically for **hospitals** and serves as a comprehensive tool for managing administrative and operational tasks. It enables the hospital's admin team to efficiently create and maintain records for doctors, nurses, and patients.
 
-All of that and how our app specifically works with our service is described in more detail below.
-### App Functionality
-1. Employee Client Hierarchy Controller:
+Doctors and nurses can use the client to access information about the patients they are currently assigned to and retrieve details about their personal profiles, payroll, time-off requests, and organizational hierarchy. They can also submit requests, such as leave applications or other approvals, which are managed by the admin team.
+
+By providing a free and convenient platform, our application makes it easier than ever for hospitals to collaborate by sharing comments on patient diagnoses, prescriptions, and other critical information.
+
+Details about how our app integrates with our service and its specific functionalities are described below.
+
+### Client Functionality
+1. Patients Management:
+    * Create, update, and delete patient records.
+    * View patient information, such as name, date of visit, age, and other relevant details.
+    * Access patient records, such as medical history, prescriptions, and other relevant information.
+
+2. Payroll Management:
+    * Generate payslips for employees (Doctors and Nurses).
+    * View Payroll information, such as salary, tax deducted, and other relevant details for doctors and nurses.
+    * Download payslips in PDF format for employees (Doctors and Nurses)
+    * Create and Manage Payroll for employees (Doctors and Nurses) including adding and removing payroll records, updating salaries, and other relevant information for authorized employees (Supervisors).
+
+3. Timeoff Management:
+    * Request time off for employees (Doctors and Nurses).
+    * Approve time off requests for employees (Doctors and Nurses).
+    * View and manage time off requests for employees (Doctors and Nurses).
+
+4. Employee Client Hierarchy Controller:
     * Useful to maintain hierarchies of doctors and nurses.
     * Provide functionalities to get the parent hierarchy of a doctor or nurse till certain height and remove a doctor or nurse and adjust the hierarchy tree accordingly.
     * These functionalities use employee hierarchy service's endpoints to perform relevant core operations.
@@ -22,17 +42,30 @@ complex aggregations and store some additional information wherever required on 
 
 
 ### What makes our App Better/Faster/Cheaper than prior Solutions
-Our app is free to use and provides many complex functionalities like profile management, hierarchy management, payroll management, generating payslips, timoff management from our core employee management service.
-So there is so much flexibility on the kinds of operations that our clients use! They can just focus on their business logic and use our standard core functionalities to write that business logic.
-In our case, to perform patient management, our clients just use their own custom business logic just for the patient management and patient records management and use our services for employee management (doctors, nurses etc.) of the hospital. For example, in case of hierarchy service, we assumed our client wants to get list of doctors that are managed by a certain doctor in the hierarchy tree till a certain height (as described by the API endpoint **getManagersUpToHeight**). To develop this logic,
-our client can simply make use of **getSupervisorByEmployeeId** API endpoint of our employee management service and develop their custom business logic on top of this.
+Our app is free to use and offers advanced functionalities such as profile management, hierarchy management, payroll management, payslip generation, and time-off management, all powered by our core employee management service.
+
+This design provides tremendous flexibility for clients to focus on their unique business logic while leveraging our standard core features. For instance, in patient management, clients can concentrate on implementing custom logic for managing patient records while relying on our services for handling employee management, including doctors and nurses.
+
+Take hierarchy management as an example: if a client wants to retrieve a list of doctors managed by a specific doctor within a hierarchy up to a certain depth (as defined by the **getManagersUpToHeight** API), they can build this functionality using our **getSupervisorByEmployeeId** API endpoint. By layering their custom logic over our robust services, clients can tailor solutions to their specific needs with ease.
 
 ## Building and Running a Local Instance
 
 To run the client and service repositories locally, follow these steps:
 
-1. **Start the Service Repository:**
+1. **Install Dependencies:**
+   - Ensure you have Maven installed on your system. Use this [link](https://archive.apache.org/dist/maven/maven-3/3.9.5/source/) to download the maven package
+     and follow the instructions mentioned in [here](https://maven.apache.org/guides/getting-started/windows-prerequisites.html)
+   - OpenJDK 17.0.12 - Use this [link](https://www.openlogic.com/openjdk-downloads) to download the OpenJDK package
+   - Sync the service repository using the command: https://github.com/Samhit-Chowdary/4156-Team-project.git
+   - Sync the client repository using the command: https://github.com/Samhit-Chowdary/4156-Team-project-client.git
+
+
+2. **Start the Service Repository:**
    - Navigate to the service repository directory.
+   - Build the service using the following command.
+     ```bash
+     mvn install
+     ```
    - Use the following command to start the server on port 8080:
      ```bash
      mvn spring-boot:run
@@ -40,8 +73,12 @@ To run the client and service repositories locally, follow these steps:
    - Ensure the service is up and running on `http://localhost:8080`.
 
 
-2. **Start the Client Repository:**
-   - Navigate to the client repository directory.
+3. **Start the Client Repository:**
+   - Navigate to the client repository directory. 
+   - Build the service using the following command.
+     ```bash
+     mvn install
+     ```
    - Use the following command to start the client on port 8081:
      ```bash
      mvn spring-boot:run
@@ -49,7 +86,7 @@ To run the client and service repositories locally, follow these steps:
    - Ensure the client is up and running on `http://localhost:8081`.
 
 
-3. **Testing Employee Management Features:**
+4. **Testing Employee Management Features:**
    - Access the client application through application like postman at `http://localhost:8081`.
    - Test various features provided by the client:
      - **Patients Management:** The information of patients and their records and auth are managed by the client database itself.
@@ -83,6 +120,34 @@ Ensure that all interactions with the client are correctly interfacing with the 
    7. **Get Managers Up to a Certain Height:**
       * Endpoint: `GET /managers/{employeeId}/{height}`
       * Testing: Send a GET request to the endpoint with valid employee ID and height. Verify that the response contains a list of manager IDs up to the specified height.
+   8. **Get Payroll by Employee ID:**
+      * Endpoint: `GET /payroll/{employeeId}`
+      * Testing: Send a GET request to the endpoint with a valid employee ID. Verify that the response contains the payroll of the given employee.
+   9. **Create Paryoll by Employee ID:**
+      * Endpoint: `POST /payroll/{employeeId}/addPayroll`
+      * Testing: Send a POST request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is created.
+  10. **Delete Payroll by Employee ID:**
+      * Endpoint: `DELETE /payroll/{employeeId}/deletePayroll`
+      * Testing: Send a DELETE request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is deleted.
+  11. **Create Payroll for Entire Company:**
+      * Endpoint: `POST /payroll/createPayroll`
+      * Testing: Send a POST request to the endpoint. Verify that the response contains a status of OK and that the payroll is created for all employees.
+  12. **Delete Payroll for Entire Company:**
+      * Endpoint: `DELETE /payroll/deletePayroll`
+      * Testing: Send a DELETE request to the endpoint. Verify that the response contains a status of OK and that the payroll is deleted for all employees.
+  13. **Get Timeoff by Employee ID:**
+      * Endpoint: `GET /client/timeoff/{requestorEmployeeId}/{requestedEmployeeId}`
+      * Testing: Send a GET request to the endpoint with a valid requestor and requested employee ID. Verify that the response contains the timeoff of the given employee.
+  14. **Get Timeoff by Employee ID within a Specific Date Range:**
+      * Endpoint: `GET /client/timeoff/{requestorEmployeeId}/{requestedEmployeeId}/range`
+      * Testing: Send a GET request to the endpoint with a valid requestor and requested employee ID. Verify that the response contains list of timeoffs of the given employee within the specified date range.
+  15. **Create Timeoff by Employee ID:**
+      * Endpoint: `POST /client/timeoff/create`
+      * Testing: Send a POST request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the timeoff is created.
+  16. **Update Timeoff by Employee ID:**
+      * Endpoint: `PUT /client/timeoff/{requestorEmployeeId}/{requestedEmployeeId}/{timeOffId}/update-status`
+      * Testing: Send a PUT request to the endpoint with a valid requestor and requested employee ID. Verify that the response contains a status of OK and that the timeoff is updated.
+  
 
 ## Tools used 
 - **Spring Boot:** For building the backend services and RESTful APIs.
