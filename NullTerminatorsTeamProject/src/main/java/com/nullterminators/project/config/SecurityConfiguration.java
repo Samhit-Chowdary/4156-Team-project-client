@@ -41,6 +41,8 @@ public class SecurityConfiguration {
                                         .hasRole("SUPERUSER")
                                         .requestMatchers("/patient/**")
                                         .hasAnyRole("SUPERUSER", "DOCTOR", "NURSE")
+                                        .requestMatchers("/payroll/**")
+                                        .hasAnyRole("SUPERUSER")
                                         .anyRequest()
                                         .authenticated())
                 .httpBasic(Customizer.withDefaults());
