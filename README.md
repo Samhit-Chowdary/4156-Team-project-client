@@ -35,6 +35,11 @@ Details about how our app integrates with our service and its specific functiona
     * Provide functionalities to get the parent hierarchy of a doctor or nurse till certain height and remove a doctor or nurse and adjust the hierarchy tree accordingly.
     * These functionalities use employee hierarchy service's endpoints to perform relevant core operations.
 
+5. Employee Profile Management Controller:
+    * Maintain a list of employee ID and designation for client.
+    * Get all clent employees, get client employee by id and delete employee by id.
+    * Create new employee and add (id, designation) to the client database.
+
 ### How it works with our Service
 This is the client service that can be used by hospitals to manage different categories of employees and patients in the hospital.
 All the functionalities of this client service regarding the employees (doctors, nurses, IT) uses our employee management service to perform core operations and then build various functionalities using those core endpoints. We perform
