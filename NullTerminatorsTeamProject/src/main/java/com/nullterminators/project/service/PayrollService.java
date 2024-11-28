@@ -65,6 +65,8 @@ public class PayrollService {
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+        return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
 
@@ -84,6 +86,8 @@ public class PayrollService {
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+      return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
 
@@ -104,6 +108,8 @@ public class PayrollService {
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+      return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
 
@@ -124,6 +130,8 @@ public class PayrollService {
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+      return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
 
@@ -144,6 +152,8 @@ public class PayrollService {
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+      return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
 
@@ -163,6 +173,8 @@ public class PayrollService {
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+      return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
 
@@ -182,6 +194,8 @@ public class PayrollService {
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+      return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
 
@@ -200,6 +214,8 @@ public class PayrollService {
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+      return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
 
@@ -218,6 +234,8 @@ public class PayrollService {
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+      return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
 }
