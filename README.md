@@ -120,31 +120,37 @@ Ensure that all interactions with the client are correctly interfacing with the 
    7. **Get Managers Up to a Certain Height:**
       * Endpoint: `GET /managers/{employeeId}/{height}`
       * Testing: Send a GET request to the endpoint with valid employee ID and height. Verify that the response contains a list of manager IDs up to the specified height.
-   8. **Get Payroll by Employee ID:**
+
+
+* Payroll Client Controller:
+  1. **Get Payroll by Employee ID:**
       * Endpoint: `GET /payroll/{employeeId}`
       * Testing: Send a GET request to the endpoint with a valid employee ID. Verify that the response contains the payroll of the given employee.
-   9. **Create Paryoll by Employee ID:**
+  2. **Create Paryoll by Employee ID:**
       * Endpoint: `POST /payroll/{employeeId}/addPayroll`
       * Testing: Send a POST request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is created.
-  10. **Delete Payroll by Employee ID:**
+  3. **Delete Payroll by Employee ID:**
       * Endpoint: `DELETE /payroll/{employeeId}/deletePayroll`
       * Testing: Send a DELETE request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is deleted.
-  11. **Create Payroll for Entire Company:**
+  4. **Create Payroll for Entire Company:**
       * Endpoint: `POST /payroll/createPayroll`
       * Testing: Send a POST request to the endpoint. Verify that the response contains a status of OK and that the payroll is created for all employees.
-  12. **Delete Payroll for Entire Company:**
+  5. **Delete Payroll for Entire Company:**
       * Endpoint: `DELETE /payroll/deletePayroll`
       * Testing: Send a DELETE request to the endpoint. Verify that the response contains a status of OK and that the payroll is deleted for all employees.
-  13. **Get Timeoff by Employee ID:**
+
+
+* Timeoff Client Controller:
+  1. **Get Timeoff by Employee ID:**
       * Endpoint: `GET /client/timeoff/{requestorEmployeeId}/{requestedEmployeeId}`
       * Testing: Send a GET request to the endpoint with a valid requestor and requested employee ID. Verify that the response contains the timeoff of the given employee.
-  14. **Get Timeoff by Employee ID within a Specific Date Range:**
+  2. **Get Timeoff by Employee ID within a Specific Date Range:**
       * Endpoint: `GET /client/timeoff/{requestorEmployeeId}/{requestedEmployeeId}/range`
       * Testing: Send a GET request to the endpoint with a valid requestor and requested employee ID. Verify that the response contains list of timeoffs of the given employee within the specified date range.
-  15. **Create Timeoff by Employee ID:**
+  3. **Create Timeoff by Employee ID:**
       * Endpoint: `POST /client/timeoff/create`
       * Testing: Send a POST request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the timeoff is created.
-  16. **Update Timeoff by Employee ID:**
+  4. **Update Timeoff by Employee ID:**
       * Endpoint: `PUT /client/timeoff/{requestorEmployeeId}/{requestedEmployeeId}/{timeOffId}/update-status`
       * Testing: Send a PUT request to the endpoint with a valid requestor and requested employee ID. Verify that the response contains a status of OK and that the timeoff is updated.
   
