@@ -44,7 +44,7 @@ public class PayrollController {
       Pair<HttpStatus, Object> result = payrollService.getPayrollByEmployeeId(employeeId);
       if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
         return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
-                HttpStatus.BAD_GATEWAY);
+                HttpStatus.INTERNAL_SERVER_ERROR);
       }
       return new ResponseEntity<>(result.getSecond(), result.getFirst());
     } catch (Exception e) {
@@ -71,7 +71,7 @@ public class PayrollController {
               payrollService.createPayrollByEmployeeId(employeeId, updates);
       if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
         return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
-                HttpStatus.NO_CONTENT);
+                HttpStatus.INTERNAL_SERVER_ERROR);
       }
       return new ResponseEntity<>(result.getSecond(), result.getFirst());
     } catch (Exception e) {
@@ -98,7 +98,7 @@ public class PayrollController {
               payrollService.deletePayrollByEmployeeId(employeeId, updates);
       if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
         return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
-                HttpStatus.NO_CONTENT);
+                HttpStatus.INTERNAL_SERVER_ERROR);
       }
       return new ResponseEntity<>(result.getSecond(), result.getFirst());
     } catch (Exception e) {
@@ -121,7 +121,7 @@ public class PayrollController {
       Pair<HttpStatus, Object> result = payrollService.generatePayroll(updates);
       if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
         return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
-                HttpStatus.NO_CONTENT);
+                HttpStatus.INTERNAL_SERVER_ERROR);
       }
       return new ResponseEntity<>(result.getSecond(), result.getFirst());
     } catch (Exception e) {
@@ -144,7 +144,7 @@ public class PayrollController {
       Pair<HttpStatus, Object> result = payrollService.deletePayroll(updates);
       if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
         return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
-                HttpStatus.NO_CONTENT);
+                HttpStatus.INTERNAL_SERVER_ERROR);
       }
       return new ResponseEntity<>(result.getSecond(), result.getFirst());
     } catch (Exception e) {
