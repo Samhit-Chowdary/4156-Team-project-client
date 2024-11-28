@@ -31,14 +31,66 @@ our client can simply make use of **getSupervisorByEmployeeId** API endpoint of 
 
 ## Building and Running a Local Instance
 
+To run the client and service repositories locally, follow these steps:
+
+1. **Start the Service Repository:**
+   - Navigate to the service repository directory.
+   - Use the following command to start the server on port 8080:
+     ```bash
+     mvn spring-boot:run
+     ```
+   - Ensure the service is up and running on `http://localhost:8080`.
+
+
+2. **Start the Client Repository:**
+   - Navigate to the client repository directory.
+   - Use the following command to start the client on port 8081:
+     ```bash
+     mvn spring-boot:run
+     ```
+   - Ensure the client is up and running on `http://localhost:8081`.
+
+
+3. **Testing Employee Management Features:**
+   - Access the client application through application like postman at `http://localhost:8081`.
+   - Test various features provided by the client:
+     - **Patients Management:** The information of patients and their records and auth are managed by the client database itself.
+     - **Payroll Management:** Navigate to the payroll section and verify functionalities such as viewing and generating payslips.
+     - **Profile Management:** Access the profile management features to update and view employee profiles.
+     - **Timeoff Management:** Test requesting and approving time off for employees.
+     - **Hierarchy Management:** Use the hierarchy functionalities to view and manage the employee hierarchy, including retrieving supervisors and subordinates.
+
+Ensure that all interactions with the client are correctly interfacing with the service running on port 8080.
+
 ## End to End Testing
-
-## Backend Checkstyle Report
-
-## Continuous Integration Report
-
-## A Final Note to Developers
+* Employee Client Hierarchy Controller:
+   1. **Get Subordinates of an Employee:**
+      * Endpoint: `GET /subordinates/{employeeId}`
+      * Testing: Send a GET request to the endpoint with a valid employee ID. Verify that the response contains a list of subordinates of the given employee.
+   2. **Get Supervisor of an Employee:**
+      * Endpoint: `GET /supervisor/{employeeId}`
+      * Testing: Send a GET request to the endpoint with a valid employee ID. Verify that the response contains the ID of the supervisor of the given employee.
+   3. **Get Subtree of an Employee:**
+      * Endpoint: `GET /tree/{employeeId}`
+      * Testing: Send a GET request to the endpoint with a valid employee ID. Verify that the response contains the subtree of the given employee.
+   4. **Add Supervisor-Employee Edge:**
+      * Endpoint: `POST /addEdge/{supervisorId}/{employeeId}`
+      * Testing: Send a POST request to the endpoint with valid supervisor and employee IDs. Verify that the response contains a status of OK and that the edge is added to the database.
+   5. **Remove Supervisor-Employee Edge:**
+      * Endpoint: `DELETE /removeEdge/{employeeId}`
+      * Testing: Send a DELETE request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the edge is removed from the database.
+   6. **Delete Employee and Reassign Subordinates:**
+      * Endpoint: `DELETE /delete/{employeeId}`
+      * Testing: Send a DELETE request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the employee is deleted and subordinates are reassigned.
+   7. **Get Managers Up to a Certain Height:**
+      * Endpoint: `GET /managers/{employeeId}/{height}`
+      * Testing: Send a GET request to the endpoint with valid employee ID and height. Verify that the response contains a list of manager IDs up to the specified height.
 
 ## Tools used 
-
-## Third Party API Documentation
+- **Spring Boot:** For building the backend services and RESTful APIs.
+- **Hibernate:** For ORM (Object-Relational Mapping) and database interactions.
+- **Maven:** For project build and dependency management.
+- **JUnit:** For unit testing and ensuring code quality.
+- **Postman:** For API testing and interaction with backend services.
+- **Git:** For version control and collaboration among team members.
+- **IntelliJ IDEA:** As the primary IDE for developing Java applications.
