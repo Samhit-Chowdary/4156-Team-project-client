@@ -151,7 +151,19 @@ Ensure that all interactions with the client are correctly interfacing with the 
       * Testing: Send a POST request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the timeoff is created.
   16. **Update Timeoff by Employee ID:**
       * Endpoint: `PUT /client/timeoff/{requestorEmployeeId}/{requestedEmployeeId}/{timeOffId}/update-status`
-      * Testing: Send a PUT request to the endpoint with a valid requestor and requested employee ID. Verify that the response contains a status of OK and that the timeoff is updated.
+      * Testing: Send a PUT request to the endpoint with valid requestor and requested employee ID. Verify that the response contains a status of OK and that the timeoff is updated.
+  17. **Create new employee and add it to Client DB:**
+      * Endpoint: `POST /client/employeeProfile/createNewEmployeeAndAddToClientDB`
+      * Testing: Send a POST request to the endpoint with data. Verify that the response contains a status of OK and the created employee id.
+  18. **Get all employees in Client:**
+      * Endpoint: `GET /client/employeeProfile/getAllEmployeesInClient`
+      * Testing: Send a GET request to the endpoint . Verify that the response contains a status of OK and the list of employee IDs.
+  19. **Get employee in by Employee ID:**
+      * Endpoint: `GET /client/getEmployee/{id}`
+      * Testing: Send a GET request to the endpoint with an employee ID. Verify that the response contains a status of OK and the corresponding employee details.
+  20. **Delete employee in by Employee ID:**
+      * Endpoint: `DELETE /client/deleteEmployee/{id}`
+      * Testing: Send a DELETE request to the endpoint with an employee ID. Verify that the response contains a status of OK and that employee has been deleted.
   
 
 ## Tools used 
