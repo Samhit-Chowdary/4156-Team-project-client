@@ -1,12 +1,14 @@
-# 4156-Team-project-client
+# 4156-Team-Project-Client
 
-This is the GitHub repository for the **client portion** of the Team Project associated with COMS 4156 Advanced Software Engineering. Our team name is NullTerminators and the following are our members: Ajit, Samhit, Abhilash, Hamsitha and Madhura.
-
+This GitHub repository hosts the **client-side** implementation of the Team Project for COMS 4156: Advanced Software Engineering. Our team, NullTerminators, consists of the following members: Abhilash Ganga (ag4797), Ajit Sharma Kasturi (ak5055), Hamsitha Challagundla (hc3540), Madhura Chatterjee (mc5470), Samhit Chowdary Bhogavalli (sb4845)
 ## Viewing the Service Repository
-Please use the following link to view the repository relevant to the service: https://github.com/griffinnewbold/COMS-4156-Service
+Please use the following link to view the repository relevant to the service: https://github.com/Samhit-Chowdary/4156-Team-project
 
-## About our App
-Our app targets **healthcare workers**, it is an app that allows for the employee profile, payroll, timeoff and hierarchy management across various kinds of people belonging to healthcare.
+## About our Client
+Our client targets **Hospitals**, it allows the admin team of the hospital to create for the employee profile, payroll, timeoff and hierarchy management across various kinds of people belonging to healthcare.
+Role based access control is provided for the admin team to manage the employees and patients of the hospital.
+Patient records management is also provided for the admin team to manage the records of the patients.
+
 
 All of that and how our app specifically works with our service is described in more detail below.
 ### App Functionality
