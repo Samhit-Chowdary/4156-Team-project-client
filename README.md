@@ -35,6 +35,11 @@ Details about how our app integrates with our service and its specific functiona
     * Provide functionalities to get the parent hierarchy of a doctor or nurse till certain height and remove a doctor or nurse and adjust the hierarchy tree accordingly.
     * These functionalities use employee hierarchy service's endpoints to perform relevant core operations.
 
+5. Employee Profile Management Controller:
+    * Maintain a list of employee ID and designation for client.
+    * Get all clent employees, get client employee by id and delete employee by id.
+    * Create new employee and add (id, designation) to the client database.
+
 ### How it works with our Service
 This is the client service that can be used by hospitals to manage different categories of employees and patients in the hospital.
 All the functionalities of this client service regarding the employees (doctors, nurses, IT) uses our employee management service to perform core operations and then build various functionalities using those core endpoints. We perform
@@ -152,7 +157,19 @@ Ensure that all interactions with the client are correctly interfacing with the 
       * Testing: Send a POST request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the timeoff is created.
   4. **Update Timeoff by Employee ID:**
       * Endpoint: `PUT /client/timeoff/{requestorEmployeeId}/{requestedEmployeeId}/{timeOffId}/update-status`
-      * Testing: Send a PUT request to the endpoint with a valid requestor and requested employee ID. Verify that the response contains a status of OK and that the timeoff is updated.
+      * Testing: Send a PUT request to the endpoint with valid requestor and requested employee ID. Verify that the response contains a status of OK and that the timeoff is updated.
+  17. **Create new employee and add it to Client DB:**
+      * Endpoint: `POST /client/employeeProfile/createNewEmployeeAndAddToClientDB`
+      * Testing: Send a POST request to the endpoint with data. Verify that the response contains a status of OK and the created employee id.
+  18. **Get all employees in Client:**
+      * Endpoint: `GET /client/employeeProfile/getAllEmployeesInClient`
+      * Testing: Send a GET request to the endpoint . Verify that the response contains a status of OK and the list of employee IDs.
+  19. **Get employee in by Employee ID:**
+      * Endpoint: `GET /client/getEmployee/{id}`
+      * Testing: Send a GET request to the endpoint with an employee ID. Verify that the response contains a status of OK and the corresponding employee details.
+  20. **Delete employee in by Employee ID:**
+      * Endpoint: `DELETE /client/deleteEmployee/{id}`
+      * Testing: Send a DELETE request to the endpoint with an employee ID. Verify that the response contains a status of OK and that employee has been deleted.
   
 
 ## Tools used 
