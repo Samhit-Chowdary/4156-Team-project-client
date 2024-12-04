@@ -38,9 +38,9 @@ public class SecurityConfiguration {
                         (requests) ->
                                 requests
                                         .requestMatchers("/client/**")
-                                        .hasRole("SUPERUSER")
+                                        .hasAnyRole("SUPERUSER", "DOCTOR", "NURSE", "OTHER")
                                         .requestMatchers("/patient/**")
-                                        .hasAnyRole("SUPERUSER", "DOCTOR", "NURSE")
+                                        .hasAnyRole("SUPERUSER", "DOCTOR")
                                         .requestMatchers("/payroll/**")
                                         .hasAnyRole("SUPERUSER")
                                         .anyRequest()

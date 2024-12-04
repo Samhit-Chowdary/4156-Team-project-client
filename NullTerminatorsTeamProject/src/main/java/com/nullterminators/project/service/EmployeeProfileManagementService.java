@@ -90,6 +90,7 @@ public class EmployeeProfileManagementService {
           + phoneNumber + "&gender=" + gender + "&age=" + age + "&startDate=" + startDate
           + "&designation=" + designation + "&email=" + email + "&emergencyContact="
           + emergencyContact + "&baseSalary=" + baseSalary;
+
       ResponseEntity<Integer> response =
         restTemplate.exchange(url, HttpMethod.POST
         , reqEntity, Integer.class);

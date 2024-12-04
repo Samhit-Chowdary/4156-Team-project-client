@@ -2,6 +2,7 @@ package com.nullterminators.project.controller;
 
 import com.nullterminators.project.repository.EmployeeProfileManagementRepository;
 import com.nullterminators.project.service.EmployeeProfileManagementService;
+import com.nullterminators.project.service.UserLoginDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class EmployeeProfileController {
 
   @Autowired
   private EmployeeProfileManagementRepository employeeProfileManagementRepository;
+
+  @Autowired
+  private UserLoginDetailsService userLoginDetailsService;
 
   @Autowired
   private EmployeeProfileManagementService employeeProfileManagementService;
@@ -38,7 +42,7 @@ public class EmployeeProfileController {
   public ResponseEntity<?> createNewEmployeeAndAddToClientDB(@RequestParam String name, @RequestParam String phoneNumber
       , @RequestParam String gender, @RequestParam int age, @RequestParam LocalDate startDate
       , @RequestParam String designation, @RequestParam String email, @RequestParam String emergencyContact
-      , @RequestParam int baseSalary) {
+      , @RequestParam int baseSalary, @RequestParam String username, @RequestParam String password) {
       // creating employee
       int employeeId;
         try {
@@ -46,6 +50,11 @@ public class EmployeeProfileController {
               , age, startDate, designation, email, emergencyContact, baseSalary);
 
           if (employeeId != -1) {
+            // creating a user for the employee
+            String error = userLoginDetailsService.createUser(employeeId, username, password, designation);
+            if (!error.isEmpty()) {
+              return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+            }
             // adding employee to client db
             employeeProfileManagementService.addEmployeeToClientDatabase(employeeId, designation);
             return new ResponseEntity<>(employeeId, HttpStatus.CREATED);
