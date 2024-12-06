@@ -20,10 +20,10 @@ Details about how our app integrates with our service and its specific functiona
     * Access patient records, such as medical history, prescriptions, and other relevant information.
 
 2. Payroll Management:
+    * Create payroll requests by employees (Doctors and Nurses) and approve/reject them (Admin).
     * Generate payslips for employees (Doctors and Nurses).
     * View Payroll information, such as salary, tax deducted, and other relevant details for doctors and nurses.
     * Download payslips in PDF format for employees (Doctors and Nurses)
-    * Create and Manage Payroll for employees (Doctors and Nurses) including adding and removing payroll records, updating salaries, and other relevant information for authorized employees (Supervisors).
 
 3. Timeoff Management:
     * Request time off for employees (Doctors and Nurses).
@@ -67,6 +67,7 @@ To run the client and service repositories locally, follow these steps:
 
 2. **Start the Service Repository:**
    - Navigate to the service repository directory.
+   - Update the application.properties file with your database credentials.
    - Build the service using the following command.
      ```bash
      mvn install
@@ -80,6 +81,7 @@ To run the client and service repositories locally, follow these steps:
 
 3. **Start the Client Repository:**
    - Navigate to the client repository directory. 
+   - Update the application.properties file with your database credentials.
    - Build the service using the following command.
      ```bash
      mvn install
@@ -95,7 +97,7 @@ To run the client and service repositories locally, follow these steps:
    - Access the client application through application like postman at `http://localhost:8081`.
    - Test various features provided by the client:
      - **Patients Management:** The information of patients and their records and auth are managed by the client database itself.
-     - **Payroll Management:** Navigate to the payroll section and verify functionalities such as viewing and generating payslips.
+     - **Payroll Management:** Navigate to the payroll section and verify functionalities such as viewing and generating payslips, crud operations for payroll records, and approval of payroll requests.
      - **Profile Management:** Access the profile management features to update and view employee profiles.
      - **Timeoff Management:** Test requesting and approving time off for employees.
      - **Hierarchy Management:** Use the hierarchy functionalities to view and manage the employee hierarchy, including retrieving supervisors and subordinates.
@@ -128,22 +130,36 @@ Ensure that all interactions with the client are correctly interfacing with the 
 
 
 * Payroll Client Controller:
-  1. **Get Payroll by Employee ID:**
-      * Endpoint: `GET /payroll/{employeeId}`
-      * Testing: Send a GET request to the endpoint with a valid employee ID. Verify that the response contains the payroll of the given employee.
-  2. **Create Paryoll by Employee ID:**
-      * Endpoint: `POST /payroll/{employeeId}/addPayroll`
-      * Testing: Send a POST request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is created.
-  3. **Delete Payroll by Employee ID:**
-      * Endpoint: `DELETE /payroll/{employeeId}/deletePayroll`
-      * Testing: Send a DELETE request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is deleted.
-  4. **Create Payroll for Entire Company:**
-      * Endpoint: `POST /payroll/createPayroll`
-      * Testing: Send a POST request to the endpoint. Verify that the response contains a status of OK and that the payroll is created for all employees.
-  5. **Delete Payroll for Entire Company:**
-      * Endpoint: `DELETE /payroll/deletePayroll`
-      * Testing: Send a DELETE request to the endpoint. Verify that the response contains a status of OK and that the payroll is deleted for all employees.
+  - (Available for all the roles in the system)
+    1. **Get Payroll by Employee ID:**
+        * Endpoint: `GET /client/payroll/{employeeId}`
+        * Testing: Send a GET request to the endpoint with a valid employee ID. Verify that the response contains the payroll of the given employee.
 
+  - (Available for HR and Admin)
+    2. **Create Paryoll by Employee ID:**
+        * Endpoint: `POST /payroll/{employeeId}/addPayroll`
+        * Testing: Send a POST request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is created.
+    3. **Delete Payroll by Employee ID:**
+        * Endpoint: `DELETE /payroll/{employeeId}/deletePayroll`
+        * Testing: Send a DELETE request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is deleted.
+    4. **Create Payroll for Entire Company:**
+        * Endpoint: `POST /payroll/createPayroll`
+        * Testing: Send a POST request to the endpoint. Verify that the response contains a status of OK and that the payroll is created for all employees.
+    5. **Delete Payroll for Entire Company:**
+        * Endpoint: `DELETE /payroll/deletePayroll`
+        * Testing: Send a DELETE request to the endpoint. Verify that the response contains a status of OK and that the payroll is deleted for all employees.
+    6. **Adjust Salary for Employee:**
+        * Endpoint: `PATCH /payroll/{employeeId}/adjustSalary`
+        * Testing: Send a PATCH request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the salary is adjusted.
+    7. **Adjust Day for a payroll Record for Employee:**
+        * Endpoint: `PATCH /payroll/{employeeId}/adjustDay`
+        * Testing: Send a PATCH request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the day is adjusted.
+    8. **Mark Payroll record as paid for Employee:**
+        * Endpoint: `PATCH /payroll/{employeeId}/markPaid`
+        * Testing: Send a PATCH request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll record is marked as paid.
+    9. **Mark Payroll record as not paid for Employee:**
+        * Endpoint: `PATCH /payroll/{employeeId}/markUnpaid`
+        * Testing: Send a PATCH request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll record is marked as not paid.
 
 * Timeoff Client Controller:
   1. **Get Timeoff by Employee ID:**
@@ -174,7 +190,6 @@ Ensure that all interactions with the client are correctly interfacing with the 
 
 ## Tools used 
 - **Spring Boot:** For building the backend services and RESTful APIs.
-- **Hibernate:** For ORM (Object-Relational Mapping) and database interactions.
 - **Maven:** For project build and dependency management.
 - **JUnit:** For unit testing and ensuring code quality.
 - **Postman:** For API testing and interaction with backend services.
