@@ -1,7 +1,10 @@
 package com.nullterminators.project.controller;
 
+import com.nullterminators.project.model.EmployeeProfileManagement;
 import com.nullterminators.project.model.Patient;
 import com.nullterminators.project.model.PatientRecords;
+import com.nullterminators.project.repository.EmployeeProfileManagementRepository;
+import com.nullterminators.project.service.EmployeeProfileManagementService;
 import com.nullterminators.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -9,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,6 +20,9 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private EmployeeProfileManagementRepository employeeProfileManagementRepository;
 
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<?> getPatientById(@PathVariable(value = "patientId") Integer patientId) {
@@ -28,6 +35,15 @@ public class PatientController {
         }
         return new ResponseEntity<>(
                 Map.of("response", patientService.getPatientById(patientId)),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/patient")
+    public ResponseEntity<?> getAllPatients() {
+        List<Patient> resp = patientService.getPatients();
+        return new ResponseEntity<>(
+                Map.of("response", resp),
                 HttpStatus.OK
         );
     }
@@ -123,6 +139,40 @@ public class PatientController {
             }
             return new ResponseEntity<>(
                     Map.of("response", patientService.getPatientRecordsByPatientId(patientId)),
+                    HttpStatus.OK
+            );
+        }
+        catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
+    @GetMapping("/patient/records/getByDoctorId/{doctorId}")
+    public ResponseEntity<?> getPatientRecordsByDoctorId(@PathVariable(value = "doctorId") Integer doctorId) {
+        try {
+            EmployeeProfileManagement doctor = employeeProfileManagementRepository.findById(doctorId).orElse(null);
+            if (doctor == null || !doctor.getDesignation().equalsIgnoreCase("doctor")) {
+                return new ResponseEntity<>(
+                        Map.of("error", "doctor not found"),
+                        HttpStatus.NOT_FOUND
+                );
+            }
+
+            return new ResponseEntity<>(
+                    Map.of("response", patientService.getPatientRecordsByDoctorId(doctorId)),
+                    HttpStatus.OK
+            );
+        }
+        catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
+    @GetMapping("/patient/records/getAll")
+    public ResponseEntity<?> getAllPatientRecords() {
+        try {
+            return new ResponseEntity<>(
+                    Map.of("response", patientService.getPatientRecords()),
                     HttpStatus.OK
             );
         }
@@ -237,7 +287,13 @@ public class PatientController {
             );
         }
 
-        //TODO: check for doctor id
+        EmployeeProfileManagement doctor = employeeProfileManagementRepository.findById(record.getDoctorId()).orElse(null);
+        if (doctor == null || !doctor.getDesignation().equalsIgnoreCase("doctor")) {
+            return new ResponseEntity<>(
+                    Map.of("error", "doctor not found"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
 
         try {
             Pair<String, String> response = patientService.createPatientRecords(record);
