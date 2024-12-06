@@ -74,6 +74,14 @@ public class PatientService {
         return patientRecordsRepository.findAllByPatientId(id);
     }
 
+    public List<Patient> getPatients() {
+        return patientRepository.findAll();
+    }
+
+    public List<PatientRecords> getPatientRecords() {
+        return patientRecordsRepository.findAll();
+    }
+
     public List<PatientRecords> getPatientRecordsByDoctorId(Integer id) {
         return patientRecordsRepository.findAllByDoctorId(id);
     }

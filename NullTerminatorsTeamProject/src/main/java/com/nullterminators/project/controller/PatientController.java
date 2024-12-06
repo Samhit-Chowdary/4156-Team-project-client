@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,6 +29,15 @@ public class PatientController {
         }
         return new ResponseEntity<>(
                 Map.of("response", patientService.getPatientById(patientId)),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/patient")
+    public ResponseEntity<?> getAllPatients() {
+        List<Patient> resp = patientService.getPatients();
+        return new ResponseEntity<>(
+                Map.of("response", resp),
                 HttpStatus.OK
         );
     }
@@ -123,6 +133,32 @@ public class PatientController {
             }
             return new ResponseEntity<>(
                     Map.of("response", patientService.getPatientRecordsByPatientId(patientId)),
+                    HttpStatus.OK
+            );
+        }
+        catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
+    @GetMapping("/patient/records/getByDoctorId/{doctorId}")
+    public ResponseEntity<?> getPatientRecordsByDoctorId(@PathVariable(value = "doctorId") Integer doctorId) {
+        try {
+            return new ResponseEntity<>(
+                    Map.of("response", patientService.getPatientRecordsByDoctorId(doctorId)),
+                    HttpStatus.OK
+            );
+        }
+        catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
+    @GetMapping("/patient/records/getAll")
+    public ResponseEntity<?> getAllPatientRecords() {
+        try {
+            return new ResponseEntity<>(
+                    Map.of("response", patientService.getPatientRecords()),
                     HttpStatus.OK
             );
         }
