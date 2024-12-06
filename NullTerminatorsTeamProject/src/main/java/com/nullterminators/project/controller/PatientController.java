@@ -150,6 +150,14 @@ public class PatientController {
     @GetMapping("/patient/records/getByDoctorId/{doctorId}")
     public ResponseEntity<?> getPatientRecordsByDoctorId(@PathVariable(value = "doctorId") Integer doctorId) {
         try {
+            EmployeeProfileManagement doctor = employeeProfileManagementRepository.findById(doctorId).orElse(null);
+            if (doctor == null || !doctor.getDesignation().equalsIgnoreCase("doctor")) {
+                return new ResponseEntity<>(
+                        Map.of("error", "doctor not found"),
+                        HttpStatus.NOT_FOUND
+                );
+            }
+
             return new ResponseEntity<>(
                     Map.of("response", patientService.getPatientRecordsByDoctorId(doctorId)),
                     HttpStatus.OK
