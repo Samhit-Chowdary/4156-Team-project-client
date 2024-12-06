@@ -67,17 +67,34 @@ public class EmployeeHierarchyService {
   public Long getSupervisor(Long employeeId) {
     HttpHeaders headers = createHeaders();
     HttpEntity<String> entity = new HttpEntity<>(headers);
-    ResponseEntity<Object> response =
-        restTemplate.exchange(
-            BASE_URL + "/supervisor/" + employeeId, HttpMethod.GET, entity, Object.class);
 
-    if (response.getBody() instanceof Integer) {
-      return ((Integer) response.getBody()).longValue();
-    } else if (response.getBody() instanceof Long) {
-      return (Long) response.getBody();
+    try {
+      ResponseEntity<Object> response =
+              restTemplate.exchange(
+                      BASE_URL + "/supervisor/" + employeeId, HttpMethod.GET, entity, Object.class);
+
+      if (response.getBody() instanceof String responseBody) {
+          if (responseBody.contains("Supervisor for Employee with ID " + employeeId + " doesn't exist")) {
+          return null;
+        }
+      } else if (response.getBody() instanceof Integer) {
+        return ((Integer) response.getBody()).longValue();
+      } else if (response.getBody() instanceof Long) {
+        return (Long) response.getBody();
+      }
+      return null;
+
+    } catch (HttpClientErrorException e) {
+      if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+        String responseBody = e.getResponseBodyAsString();
+        if (responseBody.contains("Supervisor for Employee with ID " + employeeId + " doesn't exist")) {
+          return null;
+        }
+      }
+      throw e;
     }
-    return null;
   }
+
 
   /**
    * Retrieves the subtree of an employee with the given ID.
