@@ -12,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -35,7 +36,8 @@ public class PayrollService {
 
   @Autowired
   public PayrollService(RestTemplate restTemplate) {
-    this.restTemplate  = restTemplate;
+    HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+    this.restTemplate  = new RestTemplate(requestFactory);
   }
 
   /**
@@ -82,7 +84,7 @@ public class PayrollService {
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
     try {
       ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId
-              + "/markAsPaid", HttpMethod.PATCH, entity, Object.class);
+              + "/markPaid", HttpMethod.PATCH, entity, Object.class);
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
@@ -104,7 +106,7 @@ public class PayrollService {
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
     try {
       ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId
-              + "/markAsUnpaid", HttpMethod.PATCH, entity, Object.class);
+              + "/markUnpaid", HttpMethod.PATCH, entity, Object.class);
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
@@ -231,6 +233,20 @@ public class PayrollService {
     try {
       ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/deletePayroll",
               HttpMethod.DELETE, entity, Object.class);
+      return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
+    } catch (HttpClientErrorException e) {
+      return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));
+    } catch (Exception e) {
+      return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+  }
+
+  public Pair<HttpStatus, Object> createRequest(Integer employeeId, Map<String, Object> updates) {
+    HttpHeaders headers = createHeaders();
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(updates, headers);
+    try {
+      ResponseEntity<Object> response = restTemplate.exchange(BASE_URL + "/payroll/" + employeeId
+                      + "/createRequest", HttpMethod.POST, entity, Object.class);
       return Pair.of((HttpStatus) response.getStatusCode(), response.getBody());
     } catch (HttpClientErrorException e) {
       return Pair.of((HttpStatus) e.getStatusCode(), e.getResponseBodyAs(Object.class));

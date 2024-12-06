@@ -7,19 +7,12 @@ import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * API Endpoints for Payroll.
  */
 @RestController
-@RequestMapping("/payroll")
 public class PayrollController {
 
   private final PayrollService payrollService;
@@ -38,7 +31,7 @@ public class PayrollController {
    *                         details and an HTTP 200 response or, an appropriate message
    *                         indicating the proper response.
    */
-  @GetMapping(value = "/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/payroll/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> getPayrollByEmployeeId(@PathVariable("employeeId") Integer employeeId) {
     try {
       Pair<HttpStatus, Object> result = payrollService.getPayrollByEmployeeId(employeeId);
@@ -63,7 +56,7 @@ public class PayrollController {
    *                         an HTTP 200 response or, an appropriate message indicating the
    *                         proper response.
    */
-  @PostMapping(value = "/{employeeId}/addPayroll", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/client/payroll/{employeeId}/addPayroll", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> createPayrollByEmployeeId(@PathVariable("employeeId") Integer employeeId,
                                                      @RequestBody Map<String, Object> updates) {
     try {
@@ -90,7 +83,7 @@ public class PayrollController {
    *                         an HTTP 200 response or, an appropriate message indicating the
    *                         proper response.
    */
-  @DeleteMapping(value = "/{employeeId}/deletePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
+  @DeleteMapping(value = "/client/payroll/{employeeId}/deletePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> deletePayrollByEmployeeId(@PathVariable("employeeId") Integer employeeId,
                                                      @RequestBody Map<String, Object> updates) {
     try {
@@ -115,7 +108,7 @@ public class PayrollController {
    *                      an HTTP 200 response or, an appropriate message indicating the
    *                      proper response.
    */
-  @PostMapping(value = "/generatePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/client/payroll/generatePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> generatePayroll(@RequestBody Map<String, Object> updates) {
     try {
       Pair<HttpStatus, Object> result = payrollService.generatePayroll(updates);
@@ -138,7 +131,7 @@ public class PayrollController {
    *                      an HTTP 200 response or, an appropriate message indicating the
    *                      proper response.
    */
-  @DeleteMapping(value = "/deletePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
+  @DeleteMapping(value = "/client/payroll/deletePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> deletePayroll(@RequestBody Map<String, Object> updates) {
     try {
       Pair<HttpStatus, Object> result = payrollService.deletePayroll(updates);
@@ -151,6 +144,48 @@ public class PayrollController {
       return handleException(e);
     }
   }
+
+//  @GetMapping(value = "/client/payroll/{employeeId}/getRequests", produces = MediaType.APPLICATION_JSON_VALUE)
+//  public ResponseEntity<?> getRequests(@PathVariable("employeeId") Integer employeeId) {
+//    try {
+//      Pair<HttpStatus, Object> result = payrollService.getRequests(employeeId);
+//      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
+//        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
+//                HttpStatus.INTERNAL_SERVER_ERROR);
+//      }
+//      return new ResponseEntity<>(result.getSecond(), result.getFirst());
+//    } catch (Exception e) {
+//      return handleException(e);
+//    }
+//  }
+
+  @PostMapping(value = "/client/payroll/{employeeId}/createRequest", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> createRequest(@PathVariable("employeeId") Integer employeeId, @RequestBody Map<String, Object> updates) {
+    try {
+      Pair<HttpStatus, Object> result = payrollService.createRequest(employeeId, updates);
+      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
+        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return new ResponseEntity<>(result.getSecond(), result.getFirst());
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+//  @DeleteMapping(value = "/client/payroll/{employeeId}/deleteRequest", produces = MediaType.APPLICATION_JSON_VALUE)
+//  public ResponseEntity<?> deleteRequest(@PathVariable("employeeId") Integer employeeId, @RequestBody Map<String, Object> updates) {
+//    try {
+//      Pair<HttpStatus, Object> result = payrollService.deleteRequest(employeeId, updates);
+//      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
+//        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
+//                HttpStatus.INTERNAL_SERVER_ERROR);
+//      }
+//      return new ResponseEntity<>(result.getSecond(), result.getFirst());
+//    } catch (Exception e) {
+//      return handleException(e);
+//    }
+//  }
 
   private ResponseEntity<?> handleException(Exception e) {
     return new ResponseEntity<>(Map.of("response", e.toString()),
