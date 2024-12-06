@@ -150,6 +150,11 @@ public class EmployeeHierarchyClientController {
   @GetMapping("/managers/{employeeId}/{height}")
   public ResponseEntity<?> getManagersUpToHeight(
       @PathVariable Long employeeId, @PathVariable int height) {
+
+    if (height <= 0) {
+      return ResponseEntity.badRequest().body("Height must be a positive value!");
+    }
+
     try {
       List<Long> managers = hierarchyService.getManagersUpToHeight(employeeId, height);
       return ResponseEntity.ok(managers);
