@@ -4,6 +4,8 @@ This GitHub repository hosts the **client-side** implementation of the Team Proj
 ## Viewing the Service Repository
 Please use the following link to view the repository relevant to the service: https://github.com/Samhit-Chowdary/4156-Team-project
 
+The client is deployed and can accessed using the following link: http://35.225.38.35:8081.
+
 ## About our Client
 Our client application is designed specifically for **hospitals** and serves as a comprehensive tool for managing administrative and operational tasks. It enables the hospital's admin team to efficiently create and maintain records for doctors, nurses, and patients.
 
@@ -14,6 +16,9 @@ By providing a free and convenient platform, our application makes it easier tha
 Details about how our app integrates with our service and its specific functionalities are described below.
 
 ### Client Functionality
+
+All client APIs have both Authentication and Authorization implemented. Authentication is done using Basic Authentication and the credentials are created during the creation of employees. Authorization is based on roles added during the creation of employees(Doctor, Nurse, IT). The client has the following features:
+
 1. Patients Management:
     * Create, update, and delete patient records.
     * View patient information, such as name, date of visit, age, and other relevant details.
