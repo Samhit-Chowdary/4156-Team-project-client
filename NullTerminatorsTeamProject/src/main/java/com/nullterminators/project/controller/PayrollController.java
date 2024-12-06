@@ -282,6 +282,20 @@ public class PayrollController {
     }
   }
 
+  @GetMapping(value = "/payroll/getPendingRequests", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> getRequests() {
+    try {
+      Pair<PayrollRequestsStatus, List<Map<String, Object>>> result =
+              payrollService.getPendingRequests();
+      if (result.getSecond().isEmpty()) {
+        return new ResponseEntity<>(Map.of("response", "No pending requests"), HttpStatus.NOT_FOUND);
+      }
+      return new ResponseEntity<>(result.getSecond(), HttpStatus.OK);
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
   private ResponseEntity<?> handleException(Exception e) {
     return new ResponseEntity<>(Map.of("response", e.toString()),
         HttpStatus.INTERNAL_SERVER_ERROR);

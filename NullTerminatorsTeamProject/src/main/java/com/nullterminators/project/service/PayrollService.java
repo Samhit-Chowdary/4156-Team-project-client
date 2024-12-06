@@ -348,6 +348,24 @@ public class PayrollService {
     }
   }
 
+  public Pair<PayrollRequestsStatus, List<Map<String, Object>>> getPendingRequests() {
+    List<Map<String, Object>> returnValue = new ArrayList<>();
+
+    List<PayrollRequests> requests = payrollRequestsRepository.findAllByApprovedStatus();
+
+    for (PayrollRequests request : requests) {
+      Map<String, Object> data = new HashMap<>();
+      data.put("id", request.getId());
+      data.put("date", request.getCreatedDate());
+      data.put("approved", PayrollRequestsStatus.values()[request.getApproved()]);
+      data.put("reason", request.getReason());
+      data.put("comments", request.getMReason());
+      returnValue.add(data);
+    }
+
+    return Pair.of(PayrollRequestsStatus.SUCCESS, returnValue);
+  }
+
   private enum UpdateField {
     day,
     month,
