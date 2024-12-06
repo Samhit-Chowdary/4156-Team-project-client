@@ -1,6 +1,9 @@
 package com.nullterminators.project.controller;
 
+import com.nullterminators.project.enums.PayrollRequestsStatus;
 import com.nullterminators.project.service.PayrollService;
+
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -31,10 +34,70 @@ public class PayrollController {
    *                         details and an HTTP 200 response or, an appropriate message
    *                         indicating the proper response.
    */
-  @GetMapping(value = "/payroll/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/client/payroll/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> getPayrollByEmployeeId(@PathVariable("employeeId") Integer employeeId) {
     try {
       Pair<HttpStatus, Object> result = payrollService.getPayrollByEmployeeId(employeeId);
+      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
+        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return new ResponseEntity<>(result.getSecond(), result.getFirst());
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  @PatchMapping(value = "/payroll/{employeeId}/markPaid", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> markPaid(@PathVariable("employeeId") Integer employeeId,
+                                    @RequestBody Map<String, Object> updates) {
+    try {
+      Pair<HttpStatus, Object> result = payrollService.markAsPaid(employeeId, updates);
+      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
+        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return new ResponseEntity<>(result.getSecond(), result.getFirst());
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  @PatchMapping(value = "/payroll/{employeeId}/markUnpaid", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> markUnpaid(@PathVariable("employeeId") Integer employeeId,
+                                      @RequestBody Map<String, Object> updates) {
+    try {
+      Pair<HttpStatus, Object> result = payrollService.markAsUnpaid(employeeId, updates);
+      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
+        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return new ResponseEntity<>(result.getSecond(), result.getFirst());
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  @PatchMapping(value = "/payroll/{employeeId}/adjustDay", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> markPending(@PathVariable("employeeId") Integer employeeId,
+                                       @RequestBody Map<String, Object> updates) {
+    try {
+      Pair<HttpStatus, Object> result = payrollService.adjustDay(employeeId, updates);
+      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
+        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return new ResponseEntity<>(result.getSecond(), result.getFirst());
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  @PatchMapping(value = "/payroll/{employeeId}/adjustSalary", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> adjustSalary(@PathVariable("employeeId") Integer employeeId,
+                                        @RequestBody Map<String, Object> updates) {
+    try {
+      Pair<HttpStatus, Object> result = payrollService.adjustSalary(employeeId, updates);
       if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
         return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
                 HttpStatus.INTERNAL_SERVER_ERROR);
@@ -56,7 +119,7 @@ public class PayrollController {
    *                         an HTTP 200 response or, an appropriate message indicating the
    *                         proper response.
    */
-  @PostMapping(value = "/client/payroll/{employeeId}/addPayroll", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/payroll/{employeeId}/addPayroll", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> createPayrollByEmployeeId(@PathVariable("employeeId") Integer employeeId,
                                                      @RequestBody Map<String, Object> updates) {
     try {
@@ -83,7 +146,7 @@ public class PayrollController {
    *                         an HTTP 200 response or, an appropriate message indicating the
    *                         proper response.
    */
-  @DeleteMapping(value = "/client/payroll/{employeeId}/deletePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
+  @DeleteMapping(value = "/payroll/{employeeId}/deletePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> deletePayrollByEmployeeId(@PathVariable("employeeId") Integer employeeId,
                                                      @RequestBody Map<String, Object> updates) {
     try {
@@ -108,7 +171,7 @@ public class PayrollController {
    *                      an HTTP 200 response or, an appropriate message indicating the
    *                      proper response.
    */
-  @PostMapping(value = "/client/payroll/generatePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/payroll/generatePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> generatePayroll(@RequestBody Map<String, Object> updates) {
     try {
       Pair<HttpStatus, Object> result = payrollService.generatePayroll(updates);
@@ -131,7 +194,7 @@ public class PayrollController {
    *                      an HTTP 200 response or, an appropriate message indicating the
    *                      proper response.
    */
-  @DeleteMapping(value = "/client/payroll/deletePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
+  @DeleteMapping(value = "/payroll/deletePayroll", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> deletePayroll(@RequestBody Map<String, Object> updates) {
     try {
       Pair<HttpStatus, Object> result = payrollService.deletePayroll(updates);
@@ -145,47 +208,79 @@ public class PayrollController {
     }
   }
 
-//  @GetMapping(value = "/client/payroll/{employeeId}/getRequests", produces = MediaType.APPLICATION_JSON_VALUE)
-//  public ResponseEntity<?> getRequests(@PathVariable("employeeId") Integer employeeId) {
-//    try {
-//      Pair<HttpStatus, Object> result = payrollService.getRequests(employeeId);
-//      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
-//        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
-//                HttpStatus.INTERNAL_SERVER_ERROR);
-//      }
-//      return new ResponseEntity<>(result.getSecond(), result.getFirst());
-//    } catch (Exception e) {
-//      return handleException(e);
-//    }
-//  }
-
-  @PostMapping(value = "/client/payroll/{employeeId}/createRequest", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> createRequest(@PathVariable("employeeId") Integer employeeId, @RequestBody Map<String, Object> updates) {
+  @GetMapping(value = "/client/payroll/{employeeId}/getRequests", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> getRequests(@PathVariable("employeeId") Integer employeeId) {
     try {
-      Pair<HttpStatus, Object> result = payrollService.createRequest(employeeId, updates);
-      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
-        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
-                HttpStatus.INTERNAL_SERVER_ERROR);
+      Pair<PayrollRequestsStatus, List<Map<String, Object>>> result =
+              payrollService.getRequests(employeeId);
+      if (result.getFirst() == PayrollRequestsStatus.EMPLOYEE_NOT_FOUND) {
+        return new ResponseEntity<>(Map.of("response",
+                "Employee Not Found in Company"), HttpStatus.NOT_FOUND);
+      } else if (result.getSecond().isEmpty()) {
+        return new ResponseEntity<>(Map.of("response", "Details Not Found"), HttpStatus.NOT_FOUND);
       }
-      return new ResponseEntity<>(result.getSecond(), result.getFirst());
+      return new ResponseEntity<>(result.getSecond(), HttpStatus.OK);
     } catch (Exception e) {
       return handleException(e);
     }
   }
 
-//  @DeleteMapping(value = "/client/payroll/{employeeId}/deleteRequest", produces = MediaType.APPLICATION_JSON_VALUE)
-//  public ResponseEntity<?> deleteRequest(@PathVariable("employeeId") Integer employeeId, @RequestBody Map<String, Object> updates) {
-//    try {
-//      Pair<HttpStatus, Object> result = payrollService.deleteRequest(employeeId, updates);
-//      if (result.getFirst() == HttpStatus.INTERNAL_SERVER_ERROR) {
-//        return new ResponseEntity<>(Map.of("response", "Internal Server Error in Service"),
-//                HttpStatus.INTERNAL_SERVER_ERROR);
-//      }
-//      return new ResponseEntity<>(result.getSecond(), result.getFirst());
-//    } catch (Exception e) {
-//      return handleException(e);
-//    }
-//  }
+  @PostMapping(value = "/client/payroll/{employeeId}/createRequest", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> createRequest(@PathVariable("employeeId") Integer employeeId, @RequestBody Map<String, Object> updates) {
+    try {
+      PayrollRequestsStatus result = payrollService.createRequest(employeeId, updates);
+      return switch (result) {
+        case EMPLOYEE_NOT_FOUND -> new ResponseEntity<>(Map.of("response",
+                "Employee not found in Company"), HttpStatus.NOT_FOUND);
+        case INVALID_DATA -> new ResponseEntity<>(Map.of("response",
+                "Invalid month or year"), HttpStatus.BAD_REQUEST);
+        case INVALID_FORMAT -> new ResponseEntity<>(Map.of("response",
+                "Invalid format for month or year"), HttpStatus.BAD_REQUEST);
+        case SUCCESS -> new ResponseEntity<>(Map.of("response",
+                "Payroll Request has been created"), HttpStatus.OK);
+        default -> new ResponseEntity<>(Map.of("response", "An Error has occurred"),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+      };
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  @PatchMapping(value = "/client/payroll/{requestId}/updateRequest", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> updateRequest(@PathVariable("requestId") Integer requestId, @RequestBody Map<String, Object> updates) {
+    try {
+      PayrollRequestsStatus result = payrollService.updateRequest(requestId, updates);
+      return switch (result) {
+        case INVALID_FORMAT -> new ResponseEntity<>(Map.of("response",
+                "Invalid format for status"), HttpStatus.BAD_REQUEST);
+        case REQUEST_NOT_FOUND -> new ResponseEntity<>(Map.of("response",
+                "Payroll Request not found"), HttpStatus.NOT_FOUND);
+        case SUCCESS -> new ResponseEntity<>(Map.of("response",
+                "Payroll Request has been updated"), HttpStatus.OK);
+        default -> new ResponseEntity<>(Map.of("response", "An Error has occurred"),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+      };
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  @DeleteMapping(value = "/client/payroll/{requestId}/deleteRequest", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> deleteRequest(@PathVariable("requestId") Integer requestId) {
+    try {
+      PayrollRequestsStatus result = payrollService.deleteRequest(requestId);
+      return switch (result) {
+        case REQUEST_NOT_FOUND -> new ResponseEntity<>(Map.of("response",
+                "Payroll Request not found"), HttpStatus.NOT_FOUND);
+        case SUCCESS -> new ResponseEntity<>(Map.of("response",
+                "Payroll Request has been deleted"), HttpStatus.OK);
+        default -> new ResponseEntity<>(Map.of("response", "An Error has occurred"),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+      };
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
 
   private ResponseEntity<?> handleException(Exception e) {
     return new ResponseEntity<>(Map.of("response", e.toString()),
