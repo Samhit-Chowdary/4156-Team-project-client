@@ -1,7 +1,10 @@
 package com.nullterminators.project.controller;
 
+import com.nullterminators.project.model.EmployeeProfileManagement;
 import com.nullterminators.project.model.Patient;
 import com.nullterminators.project.model.PatientRecords;
+import com.nullterminators.project.repository.EmployeeProfileManagementRepository;
+import com.nullterminators.project.service.EmployeeProfileManagementService;
 import com.nullterminators.project.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -17,6 +20,9 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private EmployeeProfileManagementRepository employeeProfileManagementRepository;
 
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<?> getPatientById(@PathVariable(value = "patientId") Integer patientId) {
@@ -273,7 +279,13 @@ public class PatientController {
             );
         }
 
-        //TODO: check for doctor id
+        EmployeeProfileManagement doctor = employeeProfileManagementRepository.findById(record.getDoctorId()).orElse(null);
+        if (doctor == null || !doctor.getDesignation().equalsIgnoreCase("doctor")) {
+            return new ResponseEntity<>(
+                    Map.of("error", "doctor not found"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
 
         try {
             Pair<String, String> response = patientService.createPatientRecords(record);
