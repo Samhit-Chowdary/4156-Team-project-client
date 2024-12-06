@@ -136,28 +136,28 @@ Ensure that all interactions with the client are correctly interfacing with the 
         * Testing: Send a GET request to the endpoint with a valid employee ID. Verify that the response contains the payroll of the given employee.
 
   - (Available for HR and Admin)
-    2. **Create Paryoll by Employee ID:**
+    1. **Create Paryoll by Employee ID:**
         * Endpoint: `POST /payroll/{employeeId}/addPayroll`
         * Testing: Send a POST request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is created.
-    3. **Delete Payroll by Employee ID:**
+    2. **Delete Payroll by Employee ID:**
         * Endpoint: `DELETE /payroll/{employeeId}/deletePayroll`
         * Testing: Send a DELETE request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll is deleted.
-    4. **Create Payroll for Entire Company:**
+    3. **Create Payroll for Entire Company:**
         * Endpoint: `POST /payroll/createPayroll`
-        * Testing: Send a POST request to the endpoint. Verify that the response contains a status of OK and that the payroll is created for all employees.
-    5. **Delete Payroll for Entire Company:**
+          * Testing: Send a POST request to the endpoint. Verify that the response contains a status of OK and that the payroll is created for all employees.
+    4. **Delete Payroll for Entire Company:**
         * Endpoint: `DELETE /payroll/deletePayroll`
         * Testing: Send a DELETE request to the endpoint. Verify that the response contains a status of OK and that the payroll is deleted for all employees.
-    6. **Adjust Salary for Employee:**
+    5. **Adjust Salary for Employee:**
         * Endpoint: `PATCH /payroll/{employeeId}/adjustSalary`
         * Testing: Send a PATCH request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the salary is adjusted.
-    7. **Adjust Day for a payroll Record for Employee:**
+    6. **Adjust Day for a payroll Record for Employee:**
         * Endpoint: `PATCH /payroll/{employeeId}/adjustDay`
         * Testing: Send a PATCH request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the day is adjusted.
-    8. **Mark Payroll record as paid for Employee:**
+    7. **Mark Payroll record as paid for Employee:**
         * Endpoint: `PATCH /payroll/{employeeId}/markPaid`
         * Testing: Send a PATCH request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll record is marked as paid.
-    9. **Mark Payroll record as not paid for Employee:**
+    8. **Mark Payroll record as not paid for Employee:**
         * Endpoint: `PATCH /payroll/{employeeId}/markUnpaid`
         * Testing: Send a PATCH request to the endpoint with a valid employee ID. Verify that the response contains a status of OK and that the payroll record is marked as not paid.
 
